@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../scrollbar.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 18px;
+        background: transparent;
+        font-family: "Pretendard", "Malgun Gothic", sans-serif;
+        color: #1a2540;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      .section-shell {
+        display: grid;
+        gap: 16px;
+      }
+
+      .hero-box {
+        background: linear-gradient(135deg, #f8fbff, #f1f7ff);
+        border: 1px solid rgba(122, 143, 191, 0.14);
+        border-radius: 24px;
+        padding: 24px;
+      }
+
+      .hero-kicker {
+        font-size: 12px;
+        font-weight: 900;
+        color: #5d77c2;
+        letter-spacing: 0.5px;
+        margin-bottom: 10px;
+      }
+
+      .hero-title {
+        font-size: 30px;
+        font-weight: 900;
+        margin-bottom: 10px;
+        color: #1a2540;
+      }
+
+      .hero-desc {
+        color: #657393;
+        line-height: 1.8;
+        font-size: 15px;
+      }
+
+      .search-box {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.96),
+          rgba(244, 248, 255, 0.96)
+        );
+        border: 1px solid rgba(122, 143, 191, 0.14);
+        border-radius: 18px;
+        padding: 12px 14px;
+        box-shadow: 0 8px 18px rgba(88, 109, 165, 0.06);
+      }
+
+      .search-input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        font: inherit;
+        font-size: 15px;
+        color: #1a2540;
+      }
+
+      .search-input::placeholder {
+        color: #8a97b3;
+      }
+
+      .search-meta {
+        font-size: 14px;
+        color: #657393;
+        line-height: 1.7;
+        padding: 0 4px;
+      }
+
+      .article-list {
+        display: grid;
+        gap: 16px;
+      }
+
+      .article-card {
+        background: white;
+        border: 1px solid rgba(122, 143, 191, 0.14);
+        border-radius: 22px;
+        padding: 20px;
+        box-shadow: 0 10px 24px rgba(88, 109, 165, 0.06);
+      }
+
+      .article-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: flex-start;
+        margin-bottom: 12px;
+      }
+
+      .article-date {
+        display: inline-block;
+        margin-bottom: 10px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #eef3ff, #f2fbff);
+        color: #4e69ba;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .article-title {
+        font-size: 20px;
+        font-weight: 900;
+        margin-bottom: 10px;
+        color: #1a2540;
+      }
+
+      .article-body {
+        font-size: 15px;
+        line-height: 1.8;
+        color: #1a2540;
+      }
+
+      .article-desc {
+        font-size: 14px;
+        line-height: 1.8;
+        color: #657393;
+        margin-top: 8px;
+      }
+
+      .article-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+      }
+
+      .article-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 110px;
+        padding: 11px 16px;
+        border-radius: 999px;
+        border: 1px solid rgba(122, 143, 191, 0.16);
+        background: linear-gradient(135deg, #edf3ff, #f6fbff);
+        color: #3050a8;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 800;
+        transition:
+          transform 0.18s ease,
+          box-shadow 0.18s ease,
+          opacity 0.18s ease;
+      }
+
+      .article-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 18px rgba(88, 109, 165, 0.12);
+      }
+
+      .article-btn.secondary {
+        background: white;
+        color: #4d5f8f;
+      }
+
+      .empty-state {
+        border: 1px dashed rgba(122, 143, 191, 0.24);
+        border-radius: 20px;
+        padding: 24px;
+        background: rgba(255, 255, 255, 0.7);
+        color: #73819d;
+        line-height: 1.8;
+        font-size: 14px;
+      }
+
+      mark {
+        background: linear-gradient(135deg, #eef3ff, #dff4ff);
+        color: #2a3f8f;
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-weight: 800;
+      }
+
+      @media (max-width: 760px) {
+        .article-top {
+          flex-direction: column;
+        }
+
+        .hero-title {
+          font-size: 24px;
+        }
+
+        .article-title {
+          font-size: 18px;
+        }
+
+        .article-actions {
+          width: 100%;
+        }
+
+        .article-btn {
+          flex: 1 1 auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="section-shell">
+      <div class="search-box">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="제목, 설명, 날짜 검색 예: 4월호, 체육대회, 2026-04"
+          oninput="renderNewspapers()"
+        />
+      </div>
+
+      <div class="search-meta" id="searchMeta">총 0개의 신문</div>
+
+      <div class="article-list" id="articleList"></div>
+    </div>
+
+    <script>
+      const newspapers = [
+        {
+          title: "4월호",
+          date: "2026-04-01",
+          desc: "3월 학교 생활, 반 소식 등을 담은 신문입니다.",
+          pdf: "../files/신문_4월호.pdf",
+        },
+      ];
+
+      const articleList = document.getElementById("articleList");
+      const searchInput = document.getElementById("searchInput");
+      const searchMeta = document.getElementById("searchMeta");
+
+      function escapeHtml(text) {
+        return String(text)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function highlightText(text, keyword) {
+        const safeText = escapeHtml(text);
+
+        if (!keyword) return safeText;
+
+        const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const regex = new RegExp(`(${escapedKeyword})`, "gi");
+
+        return safeText.replace(regex, "<mark>$1</mark>");
+      }
+
+      function renderNewspapers() {
+        const keyword = searchInput.value.trim().toLowerCase();
+
+        const filtered = newspapers.filter((item) => {
+          const target =
+            `${item.title} ${item.date} ${item.desc}`.toLowerCase();
+          return target.includes(keyword);
+        });
+
+        searchMeta.textContent = `총 ${filtered.length}개의 신문`;
+
+        articleList.innerHTML = "";
+
+        if (filtered.length === 0) {
+          articleList.innerHTML = `
+            <div class="empty-state">
+              검색된 신문이 없습니다.<br />
+              제목이나 설명으로 다시 검색해보세요.
+            </div>
+          `;
+          return;
+        }
+
+        filtered.forEach((item) => {
+          const card = document.createElement("div");
+          card.className = "article-card";
+
+          card.innerHTML = `
+            <div class="article-top">
+              <div>
+                <div class="article-date">${highlightText(item.date, keyword)}</div>
+                <div class="article-title">${highlightText(item.title, keyword)}</div>
+              </div>
+            </div>
+
+            <div class="article-body">
+              PDF 신문 파일입니다.
+            </div>
+
+            <div class="article-desc">
+              ${highlightText(item.desc, keyword)}
+            </div>
+
+            <div class="article-actions">
+              <a class="article-btn" href="${item.pdf}" target="_blank" rel="noopener noreferrer">
+                열기
+              </a>
+              <a class="article-btn secondary" href="${item.pdf}" target="_blank" rel="noopener noreferrer" download>
+                다운로드
+              </a>
+            </div>
+          `;
+
+          articleList.appendChild(card);
+        });
+      }
+
+      renderNewspapers();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../scrollbar.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 18px;
+        background: transparent;
+        font-family: "Pretendard", "Malgun Gothic", sans-serif;
+        color: #1a2540;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      .home-wrap {
+        display: grid;
+        gap: 18px;
+      }
+
+      .section-card {
+        background: white;
+        border: 1px solid rgba(122, 143, 191, 0.14);
+        border-radius: 22px;
+        padding: 20px;
+        box-shadow: 0 10px 24px rgba(88, 109, 165, 0.06);
+      }
+
+      .section-title {
+        font-size: 22px;
+        font-weight: 900;
+        margin-bottom: 14px;
+      }
+
+      .section-desc {
+        font-size: 14px;
+        color: #657393;
+        margin-bottom: 18px;
+        line-height: 1.7;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 14px;
+      }
+
+      .mini-box {
+        background: linear-gradient(135deg, #f8fbff, #f1f7ff);
+        border: 1px solid rgba(122, 143, 191, 0.12);
+        border-radius: 18px;
+        padding: 16px;
+      }
+
+      .mini-title {
+        font-size: 15px;
+        font-weight: 900;
+        margin-bottom: 12px;
+        color: #3554a5;
+      }
+
+      .schedule-list,
+      .task-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .schedule-item,
+      .task-item {
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(122, 143, 191, 0.1);
+        line-height: 1.75;
+        font-size: 14px;
+        white-space: pre-line;
+      }
+
+      .schedule-item b {
+        color: #3554a5;
+      }
+
+      .muted {
+        color: #657393;
+      }
+
+      .week-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        font-size: 14px;
+        border-radius: 14px;
+        overflow: hidden;
+      }
+
+      .week-table th,
+      .week-table td {
+        border: 1px solid rgba(122, 143, 191, 0.12);
+        padding: 10px 8px;
+        text-align: center;
+        vertical-align: middle;
+        word-break: keep-all;
+      }
+
+      .week-table th {
+        background: linear-gradient(135deg, #eef3ff, #f2fbff);
+        color: #3554a5;
+        font-weight: 900;
+      }
+
+      .week-table td {
+        background: rgba(255, 255, 255, 0.82);
+        line-height: 1.6;
+      }
+
+      .empty-cell {
+        color: #a0acc7;
+      }
+
+      .todo-date {
+        display: inline-block;
+        margin-bottom: 6px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #eef3ff, #f2fbff);
+        color: #4e69ba;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .search-box {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 12px;
+        background: rgba(255, 255, 255, 0.75);
+        border: 1px solid rgba(122, 143, 191, 0.12);
+        border-radius: 14px;
+        padding: 10px 12px;
+      }
+
+      .search-input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        font: inherit;
+        font-size: 14px;
+        color: #1a2540;
+      }
+
+      .search-input::placeholder {
+        color: #8a97b3;
+      }
+
+      .search-meta {
+        margin-bottom: 10px;
+        font-size: 13px;
+        color: #657393;
+      }
+
+      .rich-gray {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 8px;
+        background: #eef1f5;
+        color: #475569;
+        font-weight: 700;
+      }
+
+      .rich-highlight {
+        padding: 2px 6px;
+        border-radius: 6px;
+        background: linear-gradient(135deg, #fff7a8, #ffe76a);
+        color: #4b3f00;
+        font-weight: 800;
+      }
+
+      .rich-bold {
+        font-weight: 900;
+      }
+
+      .rich-italic {
+        font-style: italic;
+      }
+
+      mark {
+        background: linear-gradient(135deg, #eef3ff, #dff4ff);
+        color: #2a3f8f;
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-weight: 800;
+      }
+
+      @media (max-width: 760px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+
+        .section-title {
+          font-size: 20px;
+        }
+
+        .week-table th,
+        .week-table td {
+          padding: 9px 6px;
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="home-wrap">
+      <div class="section-card">
+        <div class="section-title">오늘은...</div>
+        <div class="section-desc">
+          오늘 날짜에 맞춰 시간표와 일정을 자동으로 보여주는 공간입니다.
+        </div>
+
+        <div class="grid-2">
+          <div class="mini-box">
+            <div class="mini-title" id="todayScheduleTitle">
+              📚 오늘의 시간표
+            </div>
+            <div class="schedule-list" id="todayScheduleList"></div>
+          </div>
+
+          <div class="mini-box">
+            <div class="mini-title">📌 오늘의 일정</div>
+            <div class="task-list" id="todayTodoList"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">이번주는...</div>
+        <div class="section-desc">
+          이번주 기본 시간표와 이번주 전체 일정을 정리한 공간입니다.
+        </div>
+
+        <div class="grid-3">
+          <div class="mini-box">
+            <div class="mini-title">📅 이번주 시간표</div>
+            <div id="weekScheduleBox"></div>
+          </div>
+
+          <div class="mini-box">
+            <div class="mini-title">🗂 이번주 일정</div>
+
+            <div class="search-box">
+              <input
+                type="text"
+                id="weekTodoSearch"
+                class="search-input"
+                placeholder="일정 검색 예: 만우절, 과학, 제출"
+                oninput="renderWeekTodos()"
+              />
+            </div>
+
+            <div class="search-meta" id="weekTodoMeta">총 0개의 일정</div>
+
+            <div class="task-list" id="weekTodoList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const weekNames = ["일", "월", "화", "수", "목", "금", "토"];
+
+      const defaultSchedule = {
+        1: ["체육♥️", "영어B", "정보", "정보", "과학", "도덕B♥️", "국어A"], // 월
+        2: ["미술", "수학", "스포츠", "기가", "국어A", "영어A", "사회B"], // 화
+        3: ["사회A", "음악", "과학", "체육♥️", "국어(주제)", "수학(주제)"], // 수
+        4: [
+          "체육♥️",
+          "기가(주제)",
+          "도덕B♥️",
+          "국어B",
+          "수학",
+          "영어(주제)",
+          "과학(주제)",
+        ], // 목
+        5: ["사회A", "수학", "도덕A", "국어B", "창체", "창체"], // 금
+      };
+
+      const weeklyTodos = [
+        {
+          date: "2026-04-02",
+          text: "1교시 체육시간에 !!공개수업!!",
+        },
+      ];
+
+      function formatDateKey(date) {
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, "0");
+        const d = String(date.getDate()).padStart(2, "0");
+        return `${y}-${m}-${d}`;
+      }
+
+      function formatShortDate(dateText) {
+        const parts = String(dateText).split("-");
+        if (parts.length !== 3) return dateText;
+        return `${Number(parts[1])}/${Number(parts[2])}`;
+      }
+
+      function escapeHtml(text) {
+        return String(text)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function applyRichText(text) {
+        return text
+          .replace(/\$\$(.*?)\$\$/g, '<span class="rich-bold">$1</span>')
+          .replace(/%%(.*?)%%/g, '<span class="rich-italic">$1</span>')
+          .replace(/\*\*(.*?)\*\*/g, '<span class="rich-gray">$1</span>')
+          .replace(/!!(.*?)!!/g, '<span class="rich-highlight">$1</span>');
+      }
+
+      function stripMarkup(text) {
+        return String(text).replace(/(\$\$|%%|\*\*|!!)/g, "");
+      }
+
+      function renderRichText(text) {
+        let safeText = escapeHtml(text);
+        safeText = applyRichText(safeText);
+        return safeText.replace(/\n/g, "<br />");
+      }
+
+      function highlightKeywordInHtml(html, keyword) {
+        if (!keyword) return html;
+
+        const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const regex = new RegExp(`(${escapedKeyword})`, "gi");
+
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
+
+        function walk(node) {
+          if (node.nodeType === Node.TEXT_NODE) {
+            const text = node.textContent;
+            if (!text.trim()) return;
+
+            const replaced = text.replace(regex, "<mark>$1</mark>");
+            if (replaced !== text) {
+              const span = document.createElement("span");
+              span.innerHTML = replaced;
+              node.parentNode.replaceChild(span, node);
+            }
+            return;
+          }
+
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            const children = [...node.childNodes];
+            children.forEach(walk);
+          }
+        }
+
+        [...temp.childNodes].forEach(walk);
+        return temp.innerHTML;
+      }
+
+      function getTodayInfo() {
+        const today = new Date();
+        const day = today.getDay();
+        const dateKey = formatDateKey(today);
+
+        return {
+          today,
+          day,
+          dateKey,
+          schedule: defaultSchedule[day] || [],
+          todos: weeklyTodos.filter((item) => item.date === dateKey),
+        };
+      }
+
+      function renderTodaySchedule() {
+        const info = getTodayInfo();
+        const title = document.getElementById("todayScheduleTitle");
+        const list = document.getElementById("todayScheduleList");
+
+        const month = info.today.getMonth() + 1;
+        const date = info.today.getDate();
+        const dayName = weekNames[info.day];
+
+        title.textContent = `📚 오늘의 시간표 (${month}/${date} ${dayName})`;
+        list.innerHTML = "";
+
+        if (info.day === 0 || info.day === 6) {
+          list.innerHTML = `<div class="schedule-item muted">오늘은 주말이라 시간표가 없습니다.</div>`;
+          return;
+        }
+
+        if (!info.schedule || info.schedule.length === 0) {
+          list.innerHTML = `<div class="schedule-item muted">등록된 시간표가 없습니다.</div>`;
+          return;
+        }
+
+        info.schedule.forEach((subject, index) => {
+          const item = document.createElement("div");
+          item.className = "schedule-item";
+          item.innerHTML = `<b>${index + 1}교시</b> : ${renderRichText(subject)}`;
+          list.appendChild(item);
+        });
+      }
+
+      function renderTodayTodos() {
+        const info = getTodayInfo();
+        const container = document.getElementById("todayTodoList");
+        container.innerHTML = "";
+
+        if (!info.todos || info.todos.length === 0) {
+          container.innerHTML = `<div class="task-item muted">오늘 일정 없음</div>`;
+          return;
+        }
+
+        info.todos.forEach((item) => {
+          const div = document.createElement("div");
+          div.className = "task-item";
+          div.innerHTML = renderRichText(item.text);
+          container.appendChild(div);
+        });
+      }
+
+      function renderWeekSchedule() {
+        const box = document.getElementById("weekScheduleBox");
+
+        const maxPeriod = 7;
+        const days = [1, 2, 3, 4, 5];
+
+        let html = `<table class="week-table">`;
+
+        html += `
+          <tr>
+            <th>교시/날짜</th>
+            <th>월</th>
+            <th>화</th>
+            <th>수</th>
+            <th>목</th>
+            <th>금</th>
+          </tr>
+        `;
+
+        for (let period = 0; period < maxPeriod; period++) {
+          html += `<tr>`;
+          html += `<th>${period + 1}교시</th>`;
+
+          days.forEach((day) => {
+            const subject = defaultSchedule[day]?.[period];
+            html += `
+              <td class="${subject ? "" : "empty-cell"}">
+                ${subject ? renderRichText(subject) : "-"}
+              </td>
+            `;
+          });
+
+          html += `</tr>`;
+        }
+
+        html += `</table>`;
+        box.innerHTML = html;
+      }
+
+      function renderWeekTodos() {
+        const container = document.getElementById("weekTodoList");
+        const meta = document.getElementById("weekTodoMeta");
+        const keyword = document
+          .getElementById("weekTodoSearch")
+          .value.trim()
+          .toLowerCase();
+
+        container.innerHTML = "";
+
+        let filtered = weeklyTodos.filter((item) => {
+          const plainText = stripMarkup(item.text).toLowerCase();
+          const target = `${item.date} ${plainText}`.toLowerCase();
+          return target.includes(keyword);
+        });
+
+        meta.textContent = `총 ${filtered.length}개의 일정`;
+
+        if (!filtered || filtered.length === 0) {
+          container.innerHTML = `<div class="task-item muted">검색된 일정이 없습니다.</div>`;
+          return;
+        }
+
+        filtered.forEach((item) => {
+          const div = document.createElement("div");
+          div.className = "task-item";
+
+          let htmlText = renderRichText(item.text);
+          if (keyword) {
+            htmlText = highlightKeywordInHtml(htmlText, keyword);
+          }
+
+          div.innerHTML = `
+            <div class="todo-date">${formatShortDate(item.date)}</div>
+            <div>${htmlText}</div>
+          `;
+          container.appendChild(div);
+        });
+      }
+
+      function renderHome() {
+        renderTodaySchedule();
+        renderTodayTodos();
+        renderWeekSchedule();
+        renderWeekTodos();
+      }
+
+      renderHome();
+    </script>
+  </body>
+</html>
