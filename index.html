@@ -1,14 +1,66 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=https://1-6class.tail8afc99.ts.net/">
-    <title>Redirecting...</title>
-</head>
-<body>
+    <meta charset="utf-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>1-6 학급 홈페이지로 이동 중</title>
+
     <script>
-        window.location.replace("https://1-6class.tail8afc99.ts.net/");
+        (() => {
+            const target = "https://1-6class.tail8afc99.ts.net";
+
+            const destination =
+                target +
+                window.location.pathname +
+                window.location.search +
+                window.location.hash;
+
+            window.location.replace(destination);
+        })();
     </script>
-    이동 중입니다...
+
+    <noscript>
+        <meta
+            http-equiv="refresh"
+            content="0;url=https://1-6class.tail8afc99.ts.net/"
+        >
+    </noscript>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: grid;
+            place-items: center;
+            font-family: "Malgun Gothic", sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .message {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="message">
+        <h1>학급 홈페이지로 이동 중입니다.</h1>
+
+        <p>
+            자동으로 이동하지 않으면
+            <a href="https://1-6class.tail8afc99.ts.net/">
+                여기를 눌러주세요.
+            </a>
+        </p>
+    </div>
 </body>
 </html>
