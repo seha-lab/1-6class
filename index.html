@@ -1,66 +1,71 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="utf-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
-
-    <title>1-6 학급 홈페이지로 이동 중</title>
-
-    <script>
-        (() => {
-            const target = "https://1-6class.tail8afc99.ts.net";
-
-            const destination =
-                target +
-                window.location.pathname +
-                window.location.search +
-                window.location.hash;
-
-            window.location.replace(destination);
-        })();
-    </script>
-
-    <noscript>
-        <meta
-            http-equiv="refresh"
-            content="0;url=https://1-6class.tail8afc99.ts.net/"
-        >
-    </noscript>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1-6 사이트 점검중</title>
 
     <style>
-        html,
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            height: 100%;
             margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f5f7fa;
+            font-family: Arial, "Noto Sans KR", sans-serif;
+            color: #202124;
         }
 
-        body {
-            display: grid;
-            place-items: center;
-            font-family: "Malgun Gothic", sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
-        }
-
-        .message {
+        .container {
             text-align: center;
+            padding: 40px 25px;
+        }
+
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0 0 15px;
+            font-size: 32px;
+        }
+
+        p {
+            margin: 8px 0;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .notice {
+            margin-top: 25px;
+            padding: 12px 20px;
+            display: inline-block;
+            border-radius: 10px;
+            background: #e9eef6;
+            color: #4b5563;
+            font-size: 14px;
         }
     </style>
 </head>
 
 <body>
-    <div class="message">
-        <h1>학급 홈페이지로 이동 중입니다.</h1>
+    <main class="container">
+        <div class="icon">🔧</div>
 
-        <p>
-            자동으로 이동하지 않으면
-            <a href="https://1-6class.tail8afc99.ts.net/">
-                여기를 눌러주세요.
-            </a>
-        </p>
-    </div>
+        <h1>1-6 사이트 점검중</h1>
+
+        <p>현재 사이트를 점검하고 있습니다.</p>
+        <p>잠시 후 다시 접속해주세요.</p>
+
+        <div class="notice">
+            이용에 불편을 드려 죄송합니다.
+        </div>
+    </main>
 </body>
-</html>
+</html> 
